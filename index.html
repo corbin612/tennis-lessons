@@ -477,7 +477,9 @@
     @media (max-width: 720px) {
       .stats-grid   { grid-template-columns: 1fr 1fr; }
       .about-inner  { grid-template-columns: 1fr; }
-      .about-visual { display: none; }
+      .about-visual { display: block; }
+      .hero { grid-template-columns: 1fr !important; }
+      .hero > div:last-child { aspect-ratio: 4/3 !important; }
       .lesson-grid  { grid-template-columns: 1fr; }
       .testi-grid   { grid-template-columns: 1fr; }
       .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
@@ -534,16 +536,21 @@
 <div id="page-home" class="page active">
 
   <!-- HERO -->
-  <div class="hero">
-    <div class="eyebrow">
-      <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span>
-      Now enrolling · Whiteland, IN
+  <div class="hero" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding-top:5rem;padding-bottom:4rem;">
+    <div>
+      <div class="eyebrow">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span>
+        Now enrolling · Whiteland, IN
+      </div>
+      <h1>Learn tennis from<br>someone who<br><em>loves the game</em></h1>
+      <p class="hero-sub">Private lessons for all ages and skill levels — from first-timers picking up a racket to competitive players looking to sharpen their edge.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="scrollTo('signup')">Book your first lesson</button>
+        <button class="btn-ghost" onclick="scrollTo('lessons')">See lesson types</button>
+      </div>
     </div>
-    <h1>Learn tennis from<br>someone who<br><em>loves the game</em></h1>
-    <p class="hero-sub">Private lessons for all ages and skill levels — from first-timers picking up a racket to competitive players looking to sharpen their edge.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="scrollTo('signup')">Book your first lesson</button>
-      <button class="btn-ghost" onclick="scrollTo('lessons')">See lesson types</button>
+    <div style="border-radius:24px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 20px 60px rgba(0,0,0,0.12);">
+      <img src="https://i.imgur.com/me4pvBB.jpeg" alt="Corbin serving on indoor court" style="width:100%;height:100%;object-fit:cover;object-position:center top;" />
     </div>
   </div>
 
@@ -573,9 +580,8 @@
           <li>Positive, disciplined environment focused on real, lasting growth</li>
         </ul>
       </div>
-      <div class="about-visual">
-        <div class="about-visual-icon">🎾</div>
-        <div class="about-visual-text">"Your game, your pace, your goals"</div>
+      <div class="about-visual" style="padding:0;overflow:hidden;">
+        <img src="https://i.imgur.com/Hs7VD3r.jpeg" alt="Corbin with racket" style="width:100%;height:100%;object-fit:cover;object-position:center top;" />
       </div>
     </div>
   </div>
@@ -886,6 +892,18 @@ let students = [
 ];
 let nextId = 4;
 let blocked = {};
+// Weekday unavailability: 7am–4pm Mon–Fri always blocked
+const WEEKDAY_BLOCKED_TIMES = ['7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM'];
+function isWeekdayBlocked(dayLabel, time) {
+  const weekdays = ['Mon','Tue','Wed','Thu','Fri'];
+  return weekdays.includes(dayLabel) && WEEKDAY_BLOCKED_TIMES.includes(time);
+}
+function isDateTimeBlocked(dateStr, time) {
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  const dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
+  return isWeekdayBlocked(dayName, time);
+}
 let weekOffset = 0;
 let addFormOpen = false;
 let mgrTab = 'list';
@@ -1001,11 +1019,12 @@ function isDateBlocked(y, m, d) {
 }
 
 function bookedTimesOnDate(dateStr) {
-  // returns array of times already booked on this date
   const [y,mo,d] = dateStr.split('-').map(Number);
   const dt = new Date(y, mo-1, d);
   const dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
-  return students.filter(s => s.day === dayName).map(s => s.time);
+  const booked = students.filter(s => s.day === dayName).map(s => s.time);
+  const autoBlocked = TIMES.filter(t => isWeekdayBlocked(dayName, t));
+  return [...new Set([...booked, ...autoBlocked])];
 }
 
 function renderCal() {
@@ -1281,12 +1300,17 @@ function renderSched() {
     DAYS.forEach((day, di) => {
       const key = slotKey(di, ti, weekOffset);
       const booking = bookedAt(day, t);
+      const autoBlk = isWeekdayBlocked(day, t);
       const el = document.createElement('div');
       el.className = 'sched-slot';
       if (booking) {
         el.className += ' is-booked';
         el.innerHTML = '<div class="slot-inner booked-lbl">' + booking.name.split(' ')[0] + '</div>';
         el.title = booking.name + ' — ' + booking.level;
+      } else if (autoBlk) {
+        el.className += ' is-blocked';
+        el.innerHTML = '<div class="slot-inner blocked-lbl" style="font-size:9px;">School</div>';
+        el.title = 'Auto-blocked: weekday school hours';
       } else if (blocked[key]) {
         el.className += ' is-blocked';
         el.innerHTML = '<div class="slot-inner blocked-lbl">Blocked</div>';
