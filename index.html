@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corbin's Tennis Lessons – Whiteland, IN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #1D9E75;
+      --green-dark: #0F6E56;
+      --green-deeper: #085041;
+      --green-bg: #E1F5EE;
+      --text: #1a1a1a;
+      --text-muted: #666;
+      --border: #e5e5e5;
+      --border-strong: #ccc;
+      --bg: #fff;
+      --bg2: #f7f7f5;
+      --radius: 14px;
+      --radius-lg: 20px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: 'DM Sans', sans-serif; }
+
+    /* ── PAGE ROUTER ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ══════════════════════════════
+       NAV
+    ══════════════════════════════ */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 980px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      height: 66px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 14px; color: var(--text-muted); transition: color .15s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--green); color: #fff;
+      font-size: 14px; font-weight: 500;
+      padding: 9px 22px; border-radius: 99px; border: none; cursor: pointer;
+    }
+    .nav-cta:hover { background: var(--green-dark); }
+    .nav-admin {
+      background: transparent; color: var(--text-muted);
+      font-size: 12px; border: 1px solid var(--border);
+      padding: 6px 12px; border-radius: 99px; cursor: pointer;
+      transition: all .15s;
+    }
+    .nav-admin:hover { border-color: var(--green); color: var(--green); }
+
+    /* ══════════════════════════════
+       LANDING — SHARED
+    ══════════════════════════════ */
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── HERO ── */
+    .hero { padding: 6rem 2rem 5rem; max-width: 980px; margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 500; color: var(--green-dark);
+      background: var(--green-bg); padding: 5px 14px;
+      border-radius: 99px; margin-bottom: 1.5rem;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(46px, 7vw, 76px);
+      font-weight: 900; line-height: 1.04;
+      letter-spacing: -2px; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--green); }
+    .hero-sub {
+      font-size: 18px; color: var(--text-muted);
+      line-height: 1.75; max-width: 540px; margin-bottom: 2.5rem;
+    }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--green); color: #fff;
+      font-size: 16px; font-weight: 500; padding: 15px 34px;
+      border-radius: 99px; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      font-size: 16px; font-weight: 500; padding: 15px 34px;
+      border-radius: 99px; border: 1px solid var(--border); cursor: pointer;
+    }
+    .btn-ghost:hover { background: var(--bg2); }
+
+    /* ── STATS ── */
+    .stats-bar { padding: 0 2rem 4rem; max-width: 980px; margin: 0 auto; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .stat-card {
+      background: var(--bg2); border-radius: var(--radius);
+      padding: 1.5rem 1.25rem; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px; font-weight: 700; color: var(--green);
+    }
+    .stat-lbl { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+
+    /* ── ABOUT ── */
+    .about-section { background: var(--bg2); padding: 5rem 2rem; }
+    .about-inner { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .badge-pill {
+      display: inline-block; background: var(--green-bg); color: var(--green-dark);
+      font-size: 12px; font-weight: 500; padding: 4px 12px;
+      border-radius: 99px; letter-spacing: .05em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .about-inner h2 {
+      font-family: 'Playfair Display', serif; font-size: 38px;
+      font-weight: 700; letter-spacing: -.5px;
+      margin-bottom: 1.25rem; line-height: 1.2;
+    }
+    .about-inner p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; font-size: 15px; }
+    .bullet-list { list-style: none; margin-top: 1.25rem; }
+    .bullet-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .bullet-list li::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0; margin-top: 8px;
+    }
+    .about-visual {
+      background: var(--green-bg); border-radius: 24px;
+      aspect-ratio: 4/5; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1.25rem;
+    }
+    .about-visual-icon { font-size: 72px; }
+    .about-visual-text {
+      font-family: 'Playfair Display', serif; font-size: 22px;
+      font-style: italic; color: var(--green-dark);
+      font-weight: 700; text-align: center; padding: 0 2rem; line-height: 1.3;
+    }
+
+    /* ── LESSONS ── */
+    .lessons-section { padding: 5rem 2rem; max-width: 980px; margin: 0 auto; }
+    .sec-label { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+    .sec-title { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 2.5rem; line-height: 1.2; }
+    .lesson-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 680px; }
+    .lesson-card {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.75rem 1.5rem; position: relative;
+    }
+    .lesson-card.featured { border: 2px solid var(--green); }
+    .feat-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--green-bg); color: var(--green-dark);
+      font-size: 11px; font-weight: 500; padding: 4px 12px;
+      border-radius: 99px; white-space: nowrap;
+    }
+    .lesson-icon { font-size: 28px; margin-bottom: 1rem; }
+    .lesson-name { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+    .lesson-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.25rem; }
+    .lesson-price { font-size: 26px; font-weight: 500; color: var(--green); }
+    .lesson-price span { font-size: 14px; font-weight: 400; color: var(--text-muted); }
+    .lesson-who { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+    .lesson-features { list-style: none; margin-top: 1rem; }
+    .lesson-features li { font-size: 13px; color: var(--text-muted); padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
+    .lesson-features li:last-child { border: none; }
+    .lesson-features li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 12px; }
+
+    /* ── SIGNUP FORM ── */
+    .signup-section { background: var(--bg2); padding: 5rem 2rem; }
+    .signup-inner { max-width: 980px; margin: 0 auto; }
+    .form-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2.5rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .fg { display: flex; flex-direction: column; gap: 6px; }
+    .fg label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .fg input, .fg select, .fg textarea {
+      padding: 11px 14px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg);
+      font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus {
+      outline: none; border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(29,158,117,.15);
+    }
+    .fg textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      width: 100%; background: var(--green); color: #fff;
+      font-size: 16px; font-weight: 500; padding: 16px;
+      border-radius: 99px; border: none; cursor: pointer;
+      margin-top: 8px; transition: background .15s;
+    }
+    .form-submit:hover { background: var(--green-dark); }
+    .success-box { display: none; text-align: center; padding: 3rem 2rem; }
+    .success-icon { font-size: 52px; margin-bottom: 1rem; }
+    .success-box h3 { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: .5rem; }
+    .success-box p { color: var(--text-muted); font-size: 15px; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-section { padding: 5rem 2rem; max-width: 980px; margin: 0 auto; }
+    .testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .testi-card { background: var(--bg2); border-radius: var(--radius); padding: 1.75rem 1.5rem; }
+    .testi-stars { color: var(--green); font-size: 14px; margin-bottom: .75rem; letter-spacing: 2px; }
+    .testi-text { font-size: 15px; line-height: 1.75; margin-bottom: 1.25rem; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-av {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--green-bg); display: flex; align-items: center;
+      justify-content: center; font-size: 13px; font-weight: 500;
+      color: var(--green-dark); flex-shrink: 0;
+    }
+    .testi-name { font-size: 14px; font-weight: 500; }
+    .testi-role { font-size: 12px; color: var(--text-muted); }
+
+    /* ── FAQ ── */
+    .faq-section { background: var(--bg2); padding: 5rem 2rem; }
+    .faq-inner { max-width: 680px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; text-align: left; background: transparent; border: none;
+      padding: 1.25rem 0; font-size: 16px; font-weight: 500;
+      color: var(--text); cursor: pointer; display: flex;
+      justify-content: space-between; align-items: center; gap: 1rem;
+    }
+    .faq-icon { font-size: 18px; color: var(--green); flex-shrink: 0; transition: transform .2s; }
+    .faq-icon.open { transform: rotate(45deg); }
+    .faq-a { font-size: 15px; color: var(--text-muted); line-height: 1.75; padding-bottom: 1.25rem; display: none; }
+    .faq-a.open { display: block; }
+
+    /* ── FOOTER ── */
+    footer { background: #111; color: #ccc; padding: 3rem 2rem; }
+    .footer-inner { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: .75rem; }
+    .footer-desc { font-size: 14px; line-height: 1.7; color: #888; }
+    .footer-col h4 { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #666; margin-bottom: 1rem; }
+    .footer-col a { display: block; font-size: 14px; color: #888; margin-bottom: .5rem; }
+    .footer-col a:hover { color: var(--green); }
+    .footer-bottom { max-width: 980px; margin: 2rem auto 0; border-top: 1px solid #222; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { font-size: 13px; color: #555; }
+    .footer-bottom a { font-size: 13px; color: var(--green); }
+
+    /* ══════════════════════════════
+       BOOKING MANAGER PAGE
+    ══════════════════════════════ */
+    .mgr-wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+    .mgr-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .mgr-header h1 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; }
+    .mgr-header p { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+    .back-btn {
+      background: transparent; border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 99px; font-size: 14px;
+      cursor: pointer; color: var(--text-muted);
+    }
+    .back-btn:hover { border-color: var(--green); color: var(--green); }
+
+    .mgr-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+    .mgr-tab {
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      padding: 10px 18px; font-size: 14px; font-weight: 500;
+      cursor: pointer; color: var(--text-muted); margin-bottom: -1px;
+    }
+    .mgr-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+    /* stats row */
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 2rem; }
+    .kpi { background: var(--bg2); border-radius: var(--radius); padding: 1.25rem 1.5rem; }
+    .kpi-n { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--green); }
+    .kpi-l { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* booking list */
+    .list-toolbar { display: flex; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .list-toolbar input, .list-toolbar select {
+      height: 38px; padding: 0 12px; border-radius: 8px;
+      border: 1px solid var(--border); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text); background: var(--bg);
+    }
+    .list-toolbar input:focus, .list-toolbar select:focus {
+      outline: none; border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(29,158,117,.12);
+    }
+    .add-booking-btn {
+      background: var(--green); color: #fff; border: none;
+      padding: 0 18px; height: 38px; border-radius: 8px;
+      font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .add-booking-btn:hover { background: var(--green-dark); }
+
+    .add-form-panel {
+      background: var(--bg2); border-radius: var(--radius);
+      padding: 1.5rem; margin-bottom: 1.5rem; display: none;
+    }
+    .add-form-panel.open { display: block; }
+    .af-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .af-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .af-group { display: flex; flex-direction: column; gap: 5px; }
+    .af-group label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+    .af-group input, .af-group select {
+      height: 38px; padding: 0 12px; border-radius: 8px;
+      border: 1px solid var(--border); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text); background: var(--bg);
+    }
+    .af-group input:focus, .af-group select:focus {
+      outline: none; border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(29,158,117,.12);
+    }
+    .af-actions { display: flex; gap: 8px; margin-top: 4px; }
+    .af-save { background: var(--green); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+    .af-cancel { background: transparent; border: 1px solid var(--border); padding: 9px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; color: var(--text); }
+
+    .book-table-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .book-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .book-table th { text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 500; color: var(--text-muted); border-bottom: 1px solid var(--border); background: var(--bg2); }
+    .book-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .book-table tr:last-child td { border-bottom: none; }
+    .book-table tr:hover td { background: var(--bg2); }
+    .book-table tbody:empty + .empty-row { display: table-row; }
+    .empty-msg { text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 14px; }
+
+    .badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; }
+    .b-beg  { background: #E1F5EE; color: #085041; }
+    .b-int  { background: #E6F1FB; color: #0C447C; }
+    .b-comp { background: #FAEEDA; color: #633806; }
+    .b-paid { background: #EAF3DE; color: #27500A; cursor: pointer; }
+    .b-due  { background: #FCEBEB; color: #791F1F; cursor: pointer; }
+    .del-btn { background: transparent; border: none; cursor: pointer; color: var(--text-muted); padding: 3px 8px; border-radius: 4px; font-size: 14px; }
+    .del-btn:hover { background: #FCEBEB; color: #A32D2D; }
+    .notes-cell { font-size: 12px; color: var(--text-muted); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* schedule grid */
+    .sched-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+    .sched-nav { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 13px; color: var(--text); }
+    .sched-nav:hover { background: var(--bg2); }
+    .sched-week-label { font-size: 15px; font-weight: 500; flex: 1; text-align: center; }
+    .sched-legend { display: flex; gap: 16px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .sched-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+    .sched-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+    .sched-scroll { overflow-x: auto; }
+    .sched-grid {
+      display: grid;
+      grid-template-columns: 58px repeat(7, 1fr);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-width: 560px;
+    }
+    .sched-col-head {
+      padding: 8px 4px; text-align: center;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px; font-weight: 500; color: var(--text-muted);
+    }
+    .sched-col-head.is-today { color: var(--green-dark); background: var(--green-bg); }
+    .sched-time {
+      height: 52px; padding: 0 6px;
+      display: flex; align-items: center;
+      font-size: 11px; color: #aaa;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .sched-slot {
+      height: 52px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg);
+    }
+    .sched-slot:last-child { border-right: none; }
+    .sched-slot:hover { background: var(--bg2); }
+    .sched-slot.is-blocked { background: #FCEBEB; }
+    .sched-slot.is-booked  { background: var(--green-bg); cursor: default; }
+    .sched-slot.is-booked:hover { background: var(--green-bg); }
+    .slot-inner { font-size: 10px; font-weight: 500; text-align: center; line-height: 1.25; padding: 2px 3px; overflow: hidden; }
+    .slot-inner.blocked-lbl { color: #A32D2D; }
+    .slot-inner.booked-lbl  { color: #085041; }
+
+    /* ── Login modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      display: flex; align-items: center; justify-content: center; z-index: 999;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal-box {
+      background: var(--bg); border-radius: var(--radius-lg);
+      padding: 2.5rem; width: 100%; max-width: 380px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.15);
+    }
+    .modal-box h2 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: .5rem; }
+    .modal-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 1.5rem; }
+    .modal-fg { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+    .modal-fg label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .modal-fg input {
+      height: 44px; padding: 0 14px; border-radius: 10px;
+      border: 1px solid var(--border); font-family: 'DM Sans', sans-serif;
+      font-size: 15px; color: var(--text);
+    }
+    .modal-fg input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,.15); }
+    .modal-err { font-size: 13px; color: #A32D2D; margin-bottom: .75rem; display: none; }
+    .modal-submit {
+      width: 100%; background: var(--green); color: #fff;
+      font-size: 15px; font-weight: 500; padding: 14px;
+      border-radius: 99px; border: none; cursor: pointer;
+    }
+    .modal-submit:hover { background: var(--green-dark); }
+    .modal-cancel { width: 100%; background: transparent; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; margin-top: 10px; padding: 6px; }
+
+    /* ── CALENDAR ── */
+    .cal-header { display:flex; align-items:center; gap:10px; margin-bottom:1rem; }
+    .cal-nav { background:transparent; border:1px solid var(--border); border-radius:8px; padding:6px 14px; cursor:pointer; font-size:14px; color:var(--text); }
+    .cal-nav:hover { background:var(--bg2); }
+    .cal-month-label { font-size:17px; font-weight:500; flex:1; text-align:center; }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+    .cal-dow { text-align:center; font-size:11px; font-weight:500; color:var(--text-muted); padding:6px 0; }
+    .cal-day {
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      border-radius:10px; font-size:14px; cursor:pointer; position:relative;
+      border:1px solid transparent;
+    }
+    .cal-day:hover:not(.cal-empty):not(.cal-past):not(.cal-blocked) { background:var(--green-bg); border-color:var(--green); }
+    .cal-day.cal-empty { cursor:default; }
+    .cal-day.cal-past { color:#ccc; cursor:default; }
+    .cal-day.cal-blocked { background:#FCEBEB; color:#ccc; cursor:not-allowed; text-decoration:line-through; }
+    .cal-day.cal-today { font-weight:700; border-color:var(--green); color:var(--green); }
+    .cal-day.cal-has-slots::after { content:''; width:5px; height:5px; border-radius:50%; background:var(--green); position:absolute; bottom:4px; left:50%; transform:translateX(-50%); }
+    .cal-day.cal-selected { background:var(--green); color:#fff !important; border-color:var(--green); }
+    .cal-day.cal-selected::after { background:#fff; }
+    .time-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:1.25rem; }
+    .time-slot { padding:12px 8px; border:1px solid var(--border); border-radius:10px; text-align:center; font-size:14px; cursor:pointer; }
+    .time-slot:hover:not(.time-taken) { background:var(--green-bg); border-color:var(--green); }
+    .time-slot.time-taken { background:var(--bg2); color:#ccc; cursor:not-allowed; text-decoration:line-through; }
+    .cal-back-btn { background:transparent; border:none; color:var(--text-muted); font-size:14px; cursor:pointer; padding:8px 0; display:block; }
+    .cal-back-btn:hover { color:var(--text); }
+
+    /* ── BOOKING TOGGLE (manager) ── */
+    .booking-toggle { display:flex; align-items:center; gap:14px; background:var(--bg2); border-radius:var(--radius); padding:1rem 1.25rem; margin-bottom:1.5rem; }
+    .toggle-track { width:44px; height:24px; border-radius:99px; background:#ccc; position:relative; cursor:pointer; transition:background .2s; flex-shrink:0; }
+    .toggle-track.on { background:var(--green); }
+    .toggle-thumb { width:18px; height:18px; border-radius:50%; background:#fff; position:absolute; top:3px; left:3px; transition:left .2s; }
+    .toggle-track.on .toggle-thumb { left:23px; }
+    .toggle-label { font-size:15px; font-weight:500; }
+    .toggle-sub { font-size:13px; color:var(--text-muted); margin-top:1px; }
+
+    /* ── BLOCKED DATES MANAGER ── */
+    .blocked-dates-section { margin-top:1.5rem; }
+    .blocked-dates-section h3 { font-size:14px; font-weight:500; margin-bottom:.75rem; }
+    .blocked-date-list { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:.75rem; min-height:32px; }
+    .blocked-chip { background:#FCEBEB; color:#A32D2D; font-size:13px; padding:4px 10px; border-radius:99px; display:flex; align-items:center; gap:6px; }
+    .blocked-chip button { background:transparent; border:none; cursor:pointer; color:#A32D2D; font-size:12px; padding:0; line-height:1; }
+    .add-block-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .add-block-row input[type=date] { height:36px; padding:0 10px; border-radius:8px; border:1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); }
+    .add-block-btn { background:var(--green); color:#fff; border:none; padding:0 16px; height:36px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; }
+
+    
+    @media (max-width: 720px) {
+      .stats-grid   { grid-template-columns: 1fr 1fr; }
+      .about-inner  { grid-template-columns: 1fr; }
+      .about-visual { display: none; }
+      .lesson-grid  { grid-template-columns: 1fr; }
+      .testi-grid   { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .form-row     { grid-template-columns: 1fr; }
+      .form-row-3   { grid-template-columns: 1fr; }
+      .kpi-row      { grid-template-columns: 1fr 1fr; }
+      .af-row2, .af-row3 { grid-template-columns: 1fr; }
+      .nav-links a  { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .kpi-row    { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <div class="nav-logo-dot"></div>
+      Corbin's Tennis
+    </div>
+    <div class="nav-links">
+      <a href="#about" onclick="showPage('home')">About</a>
+      <a href="#lessons" onclick="showPage('home')">Lessons</a>
+      <a href="#signup" onclick="showPage('home')">Book</a>
+      <button class="nav-admin" onclick="openLogin()">Coach login</button>
+      <button class="nav-cta" onclick="showPage('home'); scrollTo('signup')">Book a lesson</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="modal-overlay hidden" id="login-modal">
+  <div class="modal-box">
+    <h2>Coach login</h2>
+    <p>Sign in to view your bookings and manage your schedule.</p>
+    <div class="modal-fg">
+      <label>Password</label>
+      <input type="password" id="pw-input" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <div class="modal-err" id="login-err">Incorrect password. Try again.</div>
+    <button class="modal-submit" onclick="doLogin()">Sign in</button>
+    <button class="modal-cancel" onclick="closeLogin()">Cancel</button>
+    <p style="font-size:12px;color:#aaa;text-align:center;margin-top:1rem;">Default password: <strong>tennis</strong></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: HOME (LANDING)
+══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span>
+      Now enrolling · Whiteland, IN
+    </div>
+    <h1>Learn tennis from<br>someone who<br><em>loves the game</em></h1>
+    <p class="hero-sub">Private lessons for all ages and skill levels — from first-timers picking up a racket to competitive players looking to sharpen their edge.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollTo('signup')">Book your first lesson</button>
+      <button class="btn-ghost" onclick="scrollTo('lessons')">See lesson types</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">3+</div><div class="stat-lbl">years coaching</div></div>
+      <div class="stat-card"><div class="stat-num">Ages 5–18</div><div class="stat-lbl">all ages welcome</div></div>
+      <div class="stat-card"><div class="stat-num">Varsity</div><div class="stat-lbl">players developed</div></div>
+      <div class="stat-card"><div class="stat-num">4.9★</div><div class="stat-lbl">average rating</div></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about-section" id="about">
+    <div class="about-inner">
+      <div>
+        <div class="badge-pill">About Corbin</div>
+        <h2>Coaching that builds confidence on and off the court</h2>
+        <p>I'm Corbin Grantham — a tennis coach based in Whiteland, IN with over 3 years of experience working with athletes from ages 5 to 18. I'm also finishing a Bachelor's in Psychology at the University of Cincinnati, which shapes how I coach: I focus on the whole player, not just technique.</p>
+        <p>My training plans are built around you — your goals, your pace, your game. Whether you've never held a racket or you're preparing for varsity tryouts, I'll meet you exactly where you are.</p>
+        <ul class="bullet-list">
+          <li>Coached athletes ages 5–18 in Greenwood, IN and Whiteland, IN</li>
+          <li>Developed individualized plans that advanced multiple players to varsity</li>
+          <li>Treasurer, University of Cincinnati Tennis Club</li>
+          <li>BA in Psychology, University of Cincinnati (May 2026)</li>
+          <li>Positive, disciplined environment focused on real, lasting growth</li>
+        </ul>
+      </div>
+      <div class="about-visual">
+        <div class="about-visual-icon">🎾</div>
+        <div class="about-visual-text">"Your game, your pace, your goals"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSONS -->
+  <div class="lessons-section" id="lessons">
+    <p class="sec-label">Lesson types</p>
+    <h2 class="sec-title">Find the right fit for you</h2>
+    <div class="lesson-grid">
+
+      <div class="lesson-card featured">
+        <div class="feat-badge">Most popular</div>
+        <div class="lesson-icon">☀️</div>
+        <div class="lesson-name">Outdoor lesson</div>
+        <div class="lesson-desc">Standard lessons held on outdoor courts. All skill levels welcome — beginner through competitive.</div>
+        <div class="lesson-price">$60 <span>/ hour</span></div>
+        <div class="lesson-who">Available for all ages and skill levels</div>
+        <ul class="lesson-features">
+          <li>All skill levels — beginner to competitive</li>
+          <li>Technique, strategy & match play</li>
+          <li>Personalized training plan</li>
+          <li>Flexible scheduling</li>
+        </ul>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-icon">🏟️</div>
+        <div class="lesson-name">Indoor lesson</div>
+        <div class="lesson-desc">Year-round lessons on indoor courts — no weather cancellations, consistent conditions every session.</div>
+        <div class="lesson-price">$80 <span>/ hour</span></div>
+        <div class="lesson-who">Great for year-round training &amp; winter months</div>
+        <ul class="lesson-features">
+          <li>All skill levels — beginner to competitive</li>
+          <li>Weather-proof, consistent conditions</li>
+          <li>Personalized training plan</li>
+          <li>Ideal for serious year-round players</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CALENDAR BOOKING -->
+  <div class="signup-section" id="signup">
+    <div class="signup-inner">
+      <p class="sec-label">Book a lesson</p>
+      <h2 class="sec-title">Pick a date &amp; time</h2>
+
+      <!-- CLOSED STATE -->
+      <div id="booking-closed" style="display:none;">
+        <div class="form-card" style="text-align:center;padding:3rem 2rem;">
+          <div style="font-size:48px;margin-bottom:1rem;">🔒</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:24px;margin-bottom:.5rem;">Bookings are currently closed</h3>
+          <p style="color:var(--text-muted);font-size:15px;">Check back soon or reach out directly at <a href="mailto:corbin612@gmail.com" style="color:var(--green);">corbin612@gmail.com</a></p>
+        </div>
+      </div>
+
+      <!-- OPEN STATE -->
+      <div id="booking-open">
+        <div class="form-card" id="cal-card">
+
+          <!-- STEP 1: PICK DATE -->
+          <div id="step-date">
+            <p style="font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:1rem;">Step 1 of 3 — Choose a date</p>
+            <div class="cal-header">
+              <button class="cal-nav" onclick="calPrevMonth()">&#8592;</button>
+              <div class="cal-month-label" id="cal-month-label"></div>
+              <button class="cal-nav" onclick="calNextMonth()">&#8594;</button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:.75rem;">&#9679; = available &nbsp; blocked = unavailable</p>
+          </div>
+
+          <!-- STEP 2: PICK TIME -->
+          <div id="step-time" style="display:none;">
+            <p style="font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:.5rem;">Step 2 of 3 — Choose a time</p>
+            <p style="font-size:16px;font-weight:500;margin-bottom:1.25rem;" id="selected-date-label"></p>
+            <div class="time-grid" id="time-grid"></div>
+            <button class="cal-back-btn" onclick="goStep('date')">← Back</button>
+          </div>
+
+          <!-- STEP 3: YOUR INFO -->
+          <div id="step-info" style="display:none;">
+            <p style="font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:.5rem;">Step 3 of 3 — Your details</p>
+            <p style="font-size:15px;font-weight:500;margin-bottom:1.5rem;" id="selected-slot-label"></p>
+            <div class="form-row">
+              <div class="fg"><label>First name</label><input type="text" id="sf-fname" placeholder="Jane" /></div>
+              <div class="fg"><label>Last name</label><input type="text" id="sf-lname" placeholder="Smith" /></div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>Email</label><input type="email" id="sf-email" placeholder="jane@example.com" /></div>
+              <div class="fg"><label>Phone</label><input type="tel" id="sf-phone" placeholder="(555) 000-0000" /></div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>Lesson type</label>
+                <select id="sf-level">
+                  <option value="">Select type</option>
+                  <option value="Outdoor">Outdoor — $60/hr</option>
+                  <option value="Indoor">Indoor — $80/hr</option>
+                </select>
+              </div>
+              <div class="fg"><label>Anything to know? (optional)</label>
+                <input type="text" id="sf-notes" placeholder="Age, goals, experience..." />
+              </div>
+            </div>
+            <button class="form-submit" onclick="submitForm()">Request this lesson →</button>
+            <button class="cal-back-btn" onclick="goStep('time')" style="margin-top:8px;">← Back</button>
+          </div>
+
+          <!-- SUCCESS -->
+          <div class="success-box" id="success-box" style="display:none;">
+            <div class="success-icon">🎾</div>
+            <h3>Booking request sent!</h3>
+            <p>Corbin will confirm your lesson within 24 hours.<br>Check your inbox for details.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="faq-inner">
+      <p class="sec-label" style="text-align:center">FAQ</p>
+      <h2 class="sec-title" style="text-align:center;font-size:32px;">Common questions</h2>
+      <div id="faq-list"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Corbin's Tennis Lessons</div>
+        <p class="footer-desc">Private tennis coaching for all ages and skill levels in Whiteland, Indiana. Personalized training plans that get real results.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="#about" onclick="scrollTo('about')">About</a>
+        <a href="#lessons" onclick="scrollTo('lessons')">Lesson types</a>
+        <a href="#signup" onclick="scrollTo('signup')">Book a lesson</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:corbin612@gmail.com">corbin612@gmail.com</a>
+        <a href="tel:3174359394">(317) 435-9394</a>
+        <a>Whiteland, IN</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Corbin Grantham. All rights reserved.</p>
+      <a onclick="openLogin()" style="cursor:pointer;">Coach login</a>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════════════════════════
+     PAGE: BOOKING MANAGER
+══════════════════════════════════════ -->
+<div id="page-manager" class="page">
+  <div class="mgr-wrap">
+    <div class="mgr-header">
+      <div>
+        <h1>Booking manager</h1>
+        <p>Manage your students, schedule and availability</p>
+      </div>
+      <button class="back-btn" onclick="showPage('home')">← Back to site</button>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" id="kpi-students">0</div><div class="kpi-l">total students</div></div>
+      <div class="kpi"><div class="kpi-n" id="kpi-lessons">0</div><div class="kpi-l">lessons booked</div></div>
+      <div class="kpi"><div class="kpi-n" id="kpi-revenue">$0</div><div class="kpi-l">revenue collected</div></div>
+      <div class="kpi"><div class="kpi-n" id="kpi-due">$0</div><div class="kpi-l">payments due</div></div>
+    </div>
+
+    <div class="mgr-tabs">
+      <button class="mgr-tab active" id="tab-list-btn" onclick="switchMgrTab('list')">Student list</button>
+      <button class="mgr-tab" id="tab-sched-btn" onclick="switchMgrTab('schedule')">Weekly schedule</button>
+    </div>
+
+    <!-- ── STUDENT LIST TAB ── -->
+    <div id="mgr-tab-list">
+      <div class="list-toolbar">
+        <input type="text" id="list-search" placeholder="Search name..." style="flex:1;min-width:120px;" oninput="renderList()">
+        <select id="list-lvl" onchange="renderList()">
+          <option value="">All types</option>
+          <option>Outdoor</option><option>Indoor</option>
+        </select>
+        <select id="list-pay" onchange="renderList()">
+          <option value="">All payments</option>
+          <option value="Paid">Paid</option><option value="Due">Due</option>
+        </select>
+        <button class="add-booking-btn" onclick="toggleAddForm()">+ Add student</button>
+      </div>
+
+      <div class="add-form-panel" id="add-form-panel">
+        <div class="af-row2">
+          <div class="af-group"><label>Student name *</label><input type="text" id="af-name" placeholder="Jane Smith" /></div>
+          <div class="af-group"><label>Parent / guardian</label><input type="text" id="af-contact" placeholder="(optional)" /></div>
+        </div>
+        <div class="af-row3">
+          <div class="af-group"><label>Level *</label>
+            <select id="af-level"><option>Outdoor</option><option>Indoor</option></select>
+          </div>
+          <div class="af-group"><label>Day *</label>
+            <select id="af-day"><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option></select>
+          </div>
+          <div class="af-group"><label>Time *</label><select id="af-time"></select></div>
+        </div>
+        <div class="af-row2">
+          <div class="af-group"><label>Phone / email</label><input type="text" id="af-phone" placeholder="(317) 555-0000" /></div>
+          <div class="af-group"><label>Payment</label>
+            <select id="af-pay"><option value="Due">Due</option><option value="Paid">Paid</option></select>
+          </div>
+        </div>
+        <div class="af-group" style="margin-bottom:12px;">
+          <label>Notes</label>
+          <input type="text" id="af-notes" placeholder="e.g. goals, experience notes..." />
+        </div>
+        <div class="af-actions">
+          <button class="af-save" onclick="saveStudent()">Save student</button>
+          <button class="af-cancel" onclick="toggleAddForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="book-table-wrap">
+        <table class="book-table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Level</th>
+              <th>Day &amp; time</th>
+              <th>Contact</th>
+              <th>Payment</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="list-tbody"></tbody>
+        </table>
+        <div class="empty-msg" id="list-empty" style="display:none;">No students yet — add your first one above.</div>
+      </div>
+    </div>
+
+    <!-- ── SCHEDULE TAB ── -->
+    <div id="mgr-tab-schedule" style="display:none;">
+
+      <!-- OPEN/CLOSE BOOKINGS TOGGLE -->
+      <div class="booking-toggle">
+        <div class="toggle-track on" id="booking-toggle-track" onclick="toggleBookings()">
+          <div class="toggle-thumb"></div>
+        </div>
+        <div>
+          <div class="toggle-label" id="booking-toggle-label">Bookings are open</div>
+          <div class="toggle-sub">Students can currently request lessons on your site</div>
+        </div>
+      </div>
+
+      <!-- BLOCK DATES -->
+      <div class="blocked-dates-section">
+        <h3>Blocked dates (unavailable for booking)</h3>
+        <div class="blocked-date-list" id="blocked-date-list"></div>
+        <div class="add-block-row">
+          <input type="date" id="block-date-input" />
+          <button class="add-block-btn" onclick="addBlockedDate()">Block this date</button>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <div class="sched-header">
+          <button class="sched-nav" onclick="moveWeek(-1)">&#8592;</button>
+          <div class="sched-week-label" id="sched-week-lbl"></div>
+          <button class="sched-nav" onclick="moveWeek(1)">&#8594;</button>
+          <button class="sched-nav" onclick="moveWeek(0)" style="font-size:12px;">Today</button>
+        </div>
+        <div class="sched-legend">
+          <div class="sched-legend-item"><div class="sched-dot" style="background:var(--green);"></div>Booked student</div>
+          <div class="sched-legend-item"><div class="sched-dot" style="background:#E24B4A;"></div>Blocked / unavailable</div>
+          <div class="sched-legend-item" style="font-size:11px;">Click empty slot to block · Click blocked to unblock</div>
+        </div>
+        <div class="sched-scroll">
+          <div class="sched-grid" id="sched-grid"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-manager -->
+
+
+<script>
+// ── DATA ──
+const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const TIMES = [
+  '7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM',
+  '1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM','7:00 PM'
+];
+const RATES = { Outdoor: 60, Indoor: 80 };
+const PASSWORD = 'tennis';
+
+let students = [
+  { id:1, name:'Emma T.',  contact:'Mom: (317) 555-0101', level:'Outdoor', day:'Mon', time:'10:00 AM', phone:'(317) 555-0101', pay:'Paid', notes:'Age 9, just started' },
+  { id:2, name:'Jake R.',  contact:'',                    level:'Outdoor', day:'Wed', time:'4:00 PM',  phone:'(513) 555-0202', pay:'Due',  notes:'' },
+  { id:3, name:'Sofia M.', contact:'Dad: (513) 555-0303', level:'Indoor',  day:'Sat', time:'9:00 AM',  phone:'(513) 555-0303', pay:'Paid', notes:'Year-round training' },
+];
+let nextId = 4;
+let blocked = {};
+let weekOffset = 0;
+let addFormOpen = false;
+let mgrTab = 'list';
+
+// ── ROUTING ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0,0);
+  if (name === 'manager') { renderKPIs(); renderList(); renderSched(); }
+}
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── LOGIN ──
+function openLogin() {
+  document.getElementById('login-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+function closeLogin() {
+  document.getElementById('login-modal').classList.add('hidden');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-err').style.display = 'none';
+}
+function doLogin() {
+  const val = document.getElementById('pw-input').value;
+  if (val === PASSWORD) {
+    closeLogin();
+    showPage('manager');
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+// ── BOOKINGS OPEN/CLOSE ──
+let bookingsOpen = true;
+let blockedDates = []; // array of 'YYYY-MM-DD' strings
+
+function applyBookingState() {
+  const track = document.getElementById('booking-toggle-track');
+  const label = document.getElementById('booking-toggle-label');
+  const openEl = document.getElementById('booking-open');
+  const closedEl = document.getElementById('booking-closed');
+  if (track) {
+    track.className = 'toggle-track' + (bookingsOpen ? ' on' : '');
+    label.textContent = bookingsOpen ? 'Bookings are open' : 'Bookings are closed';
+  }
+  if (openEl) openEl.style.display = bookingsOpen ? 'block' : 'none';
+  if (closedEl) closedEl.style.display = bookingsOpen ? 'none' : 'block';
+}
+
+function toggleBookings() {
+  bookingsOpen = !bookingsOpen;
+  applyBookingState();
+}
+
+function addBlockedDate() {
+  const val = document.getElementById('block-date-input').value;
+  if (!val || blockedDates.includes(val)) return;
+  blockedDates.push(val);
+  renderBlockedDates();
+  renderCal();
+}
+
+function removeBlockedDate(d) {
+  blockedDates = blockedDates.filter(x => x !== d);
+  renderBlockedDates();
+  renderCal();
+}
+
+function renderBlockedDates() {
+  const list = document.getElementById('blocked-date-list');
+  if (!list) return;
+  list.innerHTML = '';
+  if (!blockedDates.length) { list.innerHTML = '<span style="font-size:13px;color:var(--text-muted);">No dates blocked</span>'; return; }
+  blockedDates.sort().forEach(d => {
+    const label = new Date(d + 'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const chip = document.createElement('div');
+    chip.className = 'blocked-chip';
+    chip.innerHTML = label + '<button onclick="removeBlockedDate(\'' + d + '\')">✕</button>';
+    list.appendChild(chip);
+  });
+}
+
+// ── CALENDAR ──
+let calYear, calMonth, selectedDate = null, selectedTime = null;
+
+function initCal() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCal();
+}
+
+function calPrevMonth() {
+  calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCal();
+}
+function calNextMonth() {
+  calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCal();
+}
+
+function dateKey(y, m, d) {
+  return y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+}
+
+function isDateBlocked(y, m, d) {
+  return blockedDates.includes(dateKey(y, m, d));
+}
+
+function bookedTimesOnDate(dateStr) {
+  // returns array of times already booked on this date
+  const [y,mo,d] = dateStr.split('-').map(Number);
+  const dt = new Date(y, mo-1, d);
+  const dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
+  return students.filter(s => s.day === dayName).map(s => s.time);
+}
+
+function renderCal() {
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-label').textContent = MONTHS[calMonth] + ' ' + calYear;
+  grid.innerHTML = '';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    const el = document.createElement('div'); el.className='cal-dow'; el.textContent=d; grid.appendChild(el);
+  });
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i=0; i<firstDay; i++) { const el=document.createElement('div'); el.className='cal-day cal-empty'; grid.appendChild(el); }
+  for (let d=1; d<=daysInMonth; d++) {
+    const el = document.createElement('div'); el.className='cal-day';
+    el.textContent = d;
+    const thisDate = new Date(calYear, calMonth, d);
+    const dKey = dateKey(calYear, calMonth, d);
+    const isPast = thisDate < today;
+    const isBlk = isDateBlocked(calYear, calMonth, d);
+    const bookedTimes = bookedTimesOnDate(dKey);
+    const hasSlots = TIMES.some(t => !bookedTimes.includes(t));
+    if (isPast) { el.classList.add('cal-past'); }
+    else if (isBlk) { el.classList.add('cal-blocked'); }
+    else {
+      if (thisDate.toDateString() === today.toDateString()) el.classList.add('cal-today');
+      if (hasSlots) el.classList.add('cal-has-slots');
+      if (selectedDate === dKey) el.classList.add('cal-selected');
+      el.onclick = () => selectDate(dKey);
+    }
+    grid.appendChild(el);
+  }
+}
+
+function selectDate(dKey) {
+  selectedDate = dKey;
+  renderCal();
+  renderTimeSlots();
+  goStep('time');
+  const [y,m,d] = dKey.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  document.getElementById('selected-date-label').textContent =
+    dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+
+function renderTimeSlots() {
+  const grid = document.getElementById('time-grid');
+  grid.innerHTML = '';
+  const taken = bookedTimesOnDate(selectedDate);
+  TIMES.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'time-slot' + (taken.includes(t) ? ' time-taken' : '');
+    el.textContent = t;
+    if (!taken.includes(t)) el.onclick = () => selectTime(t);
+    grid.appendChild(el);
+  });
+}
+
+function selectTime(t) {
+  selectedTime = t;
+  const [y,m,d] = selectedDate.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  const dateStr = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('selected-slot-label').textContent = '📅 ' + dateStr + ' at ' + t;
+  goStep('info');
+}
+
+function goStep(step) {
+  ['date','time','info'].forEach(s => {
+    document.getElementById('step-' + s).style.display = s === step ? 'block' : 'none';
+  });
+}
+
+// ── PUBLIC FORM SUBMIT ──
+function submitForm() {
+  const fname = document.getElementById('sf-fname').value.trim();
+  const email = document.getElementById('sf-email').value.trim();
+  const level = document.getElementById('sf-level').value;
+  if (!fname || !email || !level) {
+    alert('Please fill in your name, email, and lesson type.'); return;
+  }
+  if (!selectedDate || !selectedTime) {
+    alert('Please select a date and time first.'); return;
+  }
+  const [y,m,d] = selectedDate.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  const dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()].substring(0,3);
+  students.push({
+    id: nextId++,
+    name: fname + ' ' + document.getElementById('sf-lname').value.trim(),
+    contact: '',
+    level: level,
+    day: dayName,
+    time: selectedTime,
+    phone: document.getElementById('sf-phone').value.trim() || email,
+    pay: 'Due',
+    notes: document.getElementById('sf-notes').value.trim(),
+  });
+  ['step-date','step-time','step-info'].forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('success-box').style.display = 'block';
+}
+
+// ── FAQ ──
+const FAQS = [
+  { q: 'Where do lessons take place?', a: 'Lessons are held at Whiteland High School courts or Center Grove High School courts. The specific location will be confirmed when you book.' },
+  { q: 'What should I bring to my first lesson?', a: 'Bring a racket and athletic clothing — that\'s it! Comfortable clothes you can move in and a racket are all you need to get started.' },
+  { q: 'Do you coach adults as well as kids?', a: 'Yes, adults are welcome! I have more experience coaching kids, but I\'m happy to work with adult players of any skill level.' },
+  { q: 'How do I pay for lessons?', a: 'Payment is accepted via Venmo or cash after each lesson.' },
+  { q: 'What is your cancellation policy?', a: 'Cancellations are totally fine as long as you give at least 12 hours notice and it\'s not a recurring habit. I\'m flexible — life happens, just let me know as early as you can.' },
+  { q: 'Can I book a trial lesson first?', a: 'Absolutely — just book a lesson and we\'ll take it from there. No long-term commitment required.' },
+];
+
+function buildFAQ() {
+  const list = document.getElementById('faq-list');
+  FAQS.forEach((f, i) => {
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+    item.innerHTML = `
+      <button class="faq-q" onclick="toggleFaq(${i})">
+        <span>${f.q}</span>
+        <span class="faq-icon" id="faq-icon-${i}">+</span>
+      </button>
+      <div class="faq-a" id="faq-a-${i}">${f.a}</div>
+    `;
+    list.appendChild(item);
+  });
+}
+function toggleFaq(i) {
+  const a = document.getElementById('faq-a-' + i);
+  const icon = document.getElementById('faq-icon-' + i);
+  const isOpen = a.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.faq-icon').forEach(el => { el.classList.remove('open'); el.textContent = '+'; });
+  if (!isOpen) { a.classList.add('open'); icon.classList.add('open'); icon.textContent = '+'; }
+}
+
+// ── MANAGER KPIs ──
+function renderKPIs() {
+  document.getElementById('kpi-students').textContent = students.length;
+  document.getElementById('kpi-lessons').textContent = students.length;
+  document.getElementById('kpi-revenue').textContent = '$' + students.filter(s=>s.pay==='Paid').reduce((sum,s)=>sum+RATES[s.level],0);
+  document.getElementById('kpi-due').textContent = '$' + students.filter(s=>s.pay==='Due').reduce((sum,s)=>sum+RATES[s.level],0);
+}
+
+// ── STUDENT LIST ──
+function toggleAddForm() {
+  addFormOpen = !addFormOpen;
+  document.getElementById('add-form-panel').className = 'add-form-panel' + (addFormOpen ? ' open' : '');
+}
+
+function populateTimeSelect() {
+  const sel = document.getElementById('af-time');
+  sel.innerHTML = '';
+  TIMES.forEach(t => { const o = document.createElement('option'); o.value=t; o.textContent=t; sel.appendChild(o); });
+  sel.value = '10:00 AM';
+}
+
+function saveStudent() {
+  const name = document.getElementById('af-name').value.trim();
+  if (!name) { alert('Please enter a student name.'); return; }
+  students.push({
+    id: nextId++,
+    name,
+    contact: document.getElementById('af-contact').value.trim(),
+    level: document.getElementById('af-level').value,
+    day: document.getElementById('af-day').value,
+    time: document.getElementById('af-time').value,
+    phone: document.getElementById('af-phone').value.trim(),
+    pay: document.getElementById('af-pay').value,
+    notes: document.getElementById('af-notes').value.trim(),
+  });
+  ['af-name','af-contact','af-phone','af-notes'].forEach(id => document.getElementById(id).value = '');
+  toggleAddForm();
+  renderList(); renderKPIs(); renderSched();
+}
+
+function deleteStudent(id) {
+  if (!confirm('Remove this student?')) return;
+  students = students.filter(s => s.id !== id);
+  renderList(); renderKPIs(); renderSched();
+}
+
+function togglePay(id) {
+  const s = students.find(x => x.id === id);
+  if (s) { s.pay = s.pay === 'Paid' ? 'Due' : 'Paid'; renderList(); renderKPIs(); }
+}
+
+function renderList() {
+  const q   = document.getElementById('list-search').value.toLowerCase();
+  const lvl = document.getElementById('list-lvl').value;
+  const pay = document.getElementById('list-pay').value;
+  const filtered = students.filter(s =>
+    (!q   || s.name.toLowerCase().includes(q)) &&
+    (!lvl || s.level === lvl) &&
+    (!pay || s.pay === pay)
+  );
+  const tbody = document.getElementById('list-tbody');
+  tbody.innerHTML = '';
+  document.getElementById('list-empty').style.display = filtered.length ? 'none' : 'block';
+  filtered.forEach(s => {
+    const lc = s.level==='Outdoor' ? 'b-beg' : 'b-int';
+    const pc = s.pay==='Paid'?'b-paid':'b-due';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:500">${s.name}${s.contact?'<br><span style="font-size:11px;font-weight:400;color:var(--text-muted)">'+s.contact+'</span>':''}</td>
+      <td><span class="badge ${lc}">${s.level}</span></td>
+      <td>${s.day} · ${s.time}</td>
+      <td style="color:var(--text-muted);font-size:13px">${s.phone||'—'}</td>
+      <td>
+        <span class="badge ${pc}" onclick="togglePay(${s.id})" title="Click to toggle payment">${s.pay}</span>
+        <span style="font-size:11px;color:var(--text-muted);margin-left:4px">$${RATES[s.level]}</span>
+      </td>
+      <td class="notes-cell" title="${s.notes}">${s.notes||'—'}</td>
+      <td><button class="del-btn" onclick="deleteStudent(${s.id})" title="Remove student">&#10005;</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── SCHEDULE ──
+function switchMgrTab(tab) {
+  mgrTab = tab;
+  document.getElementById('mgr-tab-list').style.display = tab === 'list' ? 'block' : 'none';
+  document.getElementById('mgr-tab-schedule').style.display = tab === 'schedule' ? 'block' : 'none';
+  document.getElementById('tab-list-btn').className = 'mgr-tab' + (tab==='list'?' active':'');
+  document.getElementById('tab-sched-btn').className = 'mgr-tab' + (tab==='schedule'?' active':'');
+  if (tab === 'schedule') renderSched();
+}
+
+function getWeekDates(offset) {
+  const today = new Date();
+  const dow = today.getDay();
+  const mon = new Date(today);
+  mon.setDate(today.getDate() - (dow===0?6:dow-1) + offset*7);
+  return DAYS.map((_, i) => { const d = new Date(mon); d.setDate(mon.getDate()+i); return d; });
+}
+
+function fmtD(d) { return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function isToday(d) { const t=new Date(); return d.getDate()===t.getDate()&&d.getMonth()===t.getMonth()&&d.getFullYear()===t.getFullYear(); }
+function slotKey(di, ti, off) { return off+':'+di+':'+ti; }
+function bookedAt(dayLbl, time) { return students.find(s => s.day===dayLbl && s.time===time); }
+
+function moveWeek(dir) {
+  if (dir===0) weekOffset=0; else weekOffset+=dir;
+  renderSched();
+}
+
+function renderSched() {
+  const dates = getWeekDates(weekOffset);
+  document.getElementById('sched-week-lbl').textContent = fmtD(dates[0]) + ' – ' + fmtD(dates[6]);
+  const grid = document.getElementById('sched-grid');
+  grid.innerHTML = '';
+
+  // corner
+  const corner = document.createElement('div');
+  corner.className = 'sched-col-head';
+  grid.appendChild(corner);
+  // headers
+  dates.forEach((d,i) => {
+    const el = document.createElement('div');
+    el.className = 'sched-col-head' + (isToday(d)?' is-today':'');
+    el.textContent = DAYS[i] + ' ' + fmtD(d);
+    grid.appendChild(el);
+  });
+  // rows
+  TIMES.forEach((t, ti) => {
+    const tc = document.createElement('div');
+    tc.className = 'sched-time';
+    tc.textContent = t;
+    grid.appendChild(tc);
+    DAYS.forEach((day, di) => {
+      const key = slotKey(di, ti, weekOffset);
+      const booking = bookedAt(day, t);
+      const el = document.createElement('div');
+      el.className = 'sched-slot';
+      if (booking) {
+        el.className += ' is-booked';
+        el.innerHTML = '<div class="slot-inner booked-lbl">' + booking.name.split(' ')[0] + '</div>';
+        el.title = booking.name + ' — ' + booking.level;
+      } else if (blocked[key]) {
+        el.className += ' is-blocked';
+        el.innerHTML = '<div class="slot-inner blocked-lbl">Blocked</div>';
+        el.title = 'Click to unblock';
+        el.onclick = () => { delete blocked[key]; renderSched(); };
+      } else {
+        el.title = 'Click to block this time';
+        el.onclick = () => { blocked[key] = true; renderSched(); };
+      }
+      grid.appendChild(el);
+    });
+  });
+}
+
+// ── INIT ──
+buildFAQ();
+populateTimeSelect();
+renderList();
+renderKPIs();
+initCal();
+applyBookingState();
+renderBlockedDates();
+</script>
+</body>
+</html>
